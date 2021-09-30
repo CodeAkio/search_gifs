@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:share/share.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 import 'package:search_gifs/modules/gif/gif_page.dart';
 
@@ -20,7 +21,7 @@ class _HomePageState extends State<HomePage> {
   Future<Map> _getGifs() async {
     http.Response response;
 
-    if (_search == null) {
+    if (_search == null || _search!.isEmpty) {
       var url =
           "https://api.giphy.com/v1/gifs/trending?api_key=9OtDbuZCWsE64PsR99ymLwVs1WPFpYt5&limit=20&rating=g";
       var uri = Uri.parse(url);
@@ -110,8 +111,10 @@ class _HomePageState extends State<HomePage> {
         itemBuilder: (context, index) {
           if (_search == null || index < snapshot.data["data"].length) {
             return GestureDetector(
-              child: Image.network(
-                snapshot.data["data"][index]["images"]["fixed_height"]["url"],
+              child: FadeInImage.memoryNetwork(
+                placeholder: kTransparentImage,
+                image: snapshot.data["data"][index]["images"]["fixed_height"]
+                    ["url"],
                 height: 300,
                 fit: BoxFit.cover,
               ),
