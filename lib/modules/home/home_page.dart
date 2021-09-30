@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:share/share.dart';
+
 import 'package:search_gifs/modules/gif/gif_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -108,26 +110,31 @@ class _HomePageState extends State<HomePage> {
         itemBuilder: (context, index) {
           if (_search == null || index < snapshot.data["data"].length) {
             return GestureDetector(
-                child: Image.network(
-                  snapshot.data["data"][index]["images"]["fixed_height"]["url"],
-                  height: 300,
-                  fit: BoxFit.cover,
-                ),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              GifPage(gifData: snapshot.data["data"][index])));
-                });
+              child: Image.network(
+                snapshot.data["data"][index]["images"]["fixed_height"]["url"],
+                height: 300,
+                fit: BoxFit.cover,
+              ),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            GifPage(gifData: snapshot.data["data"][index])));
+              },
+              onLongPress: () {
+                Share.share(snapshot.data["data"][index]["images"]
+                    ["fixed_height"]["url"]);
+              },
+            );
           } else {
             return Container(
                 child: GestureDetector(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.add, color: Colors.white, size: 70),
-                  const Text("Carregar mais...",
+                children: const [
+                  Icon(Icons.add, color: Colors.white, size: 70),
+                  Text("Carregar mais...",
                       style: TextStyle(color: Colors.white, fontSize: 22)),
                 ],
               ),
