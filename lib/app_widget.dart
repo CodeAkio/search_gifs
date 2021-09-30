@@ -9,6 +9,8 @@ class AppWidget extends StatelessWidget {
     return MaterialApp(
       title: "Search Gifs",
       home: HomePage(),
+      theme: ThemeData(hintColor: Colors.white),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
